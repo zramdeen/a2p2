@@ -102,7 +102,7 @@ class MCSLock {
 /**
  * A Guest can visit the Room and view the Vase.
  * Each guest enters the queue and waits to enter the Room.
- * A guest can roll a dice when they are in the Room.
+ * A guest can roll a die when they are in the Room.
  * If the dice roll is greater than some threshold, they enter the queue again.
  * Once all Guests have exited the Queue, the program exits.
  */
@@ -110,6 +110,7 @@ class Guest implements Runnable {
 	private boolean again = true;
 	private int visits = 0;
 	private final MCSLock lock;
+	private final double THRESHOLD = 0.2;
 
 	Guest(MCSLock lock){
 		this.lock = lock;
@@ -124,9 +125,9 @@ class Guest implements Runnable {
 			// visit the vase and decide to get back in line
 			visits++;
 			double roll = r.nextDouble();
-			if(Double.compare(roll, 0.2) < 0){ // roll a dice
+			if(Double.compare(roll, THRESHOLD) < 0){ // roll a die to visit again
 				again = false;
-				System.out.println(Thread.currentThread().getName() + " nice vase. visits = " + visits);
+				System.out.println(Thread.currentThread().getName() + " visits = " + visits);
 			}
 
 			lock.unlock();
